@@ -1,0 +1,33 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: httpbin-http
+spec:
+  entryPoints: [web]
+  routes:
+    - kind: Rule
+      match: Host(`httpbin.traefik.lan`)
+      services:
+        - name: httpbin
+          port: 8080
+      middlewares:
+        - name: error-pages-middleware
+          namespace: error-pages
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: httpbin-https
+spec:
+  entryPoints: [websecure]
+  routes:
+    - kind: Rule
+      match: Host(`httpbin.traefik.lan`)
+      services:
+        - name: httpbin
+          port: 8080
+      middlewares:
+        - name: error-pages-middleware
+          namespace: error-pages
+  tls: {}
